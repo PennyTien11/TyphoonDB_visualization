@@ -22,6 +22,7 @@
   <script type="text/javascript" src="http://rdc28.cwb.gov.tw/TDB/js/jquery-1.7.2.min.js"></script>
   <script type="text/javascript" src="http://rdc28.cwb.gov.tw/TDB/js/jquery-ui-1.8.16.custom.min.js"></script>
   <script type="text/javascript" src="http://rdc28.cwb.gov.tw/TDB/js/json_parse.js"></script>
+      <script type="text/javascript" src="http://rdc28.cwb.gov.tw/TDB/js/basic_search/obj_googleMaps.js"></script>
   <script src="javascript.js"></script>
   <script type="text/javascript">
       google.charts.load("current", {packages:["corechart"]});
@@ -51,6 +52,28 @@
     .ggl-tooltip span {
       font-weight: bold;
     }
+    #form{
+      display: none;
+    }	
+	 #map {
+		width:35%;
+        height: 800px;
+		float:left; 
+		margin:10px;
+      }
+	  #map_path {
+		width:62%;
+        height: 800px;
+		float:left; 
+		margin:10px;
+      }
+	  
+	  .color_level {
+		width:10px; 
+		height:10px; 
+		float:left; 
+		margin-left:5px; 
+	  }
   </style>
 </head>
 
@@ -104,23 +127,82 @@
       <div class="card-header" id="timeLineTitle">
         Data updata just now
       </div>
-      <div class="card-body">
+      <div class="card-body" style="height:150px;">
           <div class="row">
             <div class="col-sm-8 my-auto">
               <div id="year_timeline"></div>
             </div>
         </div>
       </div>
-    <div class="card-header">
+    <div class="card-header">颱風累積雨量圖與路徑圖
     </div>
     <div class="card-body">
-          <div class="row">
-            <div class="col-sm-8 my-auto">
-              <div id="map" style="height: 800px; width: 600px"></div>
-            </div>
+      <div id='form'>
+          <label>
+                <input type="checkbox" name="mapHeat" checked>累積雨量趨勢分布圖
+          </label>&nbsp;
+          <label>
+                <input type="checkbox" name="mapGeo"  checked>累積雨量圖
+          </label>&nbsp;
+		  <label>
+			<div class="color_level" style="background-color:#fec7f1;"></div>300
+		  </label>
+		  <label>
+			<div class="color_level" style="background-color:#fc20c7;"></div>200
+		  </label>
+		  <label>
+			<div class="color_level" style="background-color:#cf4597;"></div>150
+		  </label>
+		  <label>
+			<div class="color_level" style="background-color:#a20d9d;"></div>130
+		  </label>
+		  <label>
+			<div class="color_level" style="background-color:#862f17;"></div>110
+		  </label>
+		  <label>
+			<div class="color_level" style="background-color:#bd2409;"></div>90
+		  </label>
+		  <label>
+			<div class="color_level" style="background-color:#red;"></div>70
+		  </label>
+		  <label>
+			<div class="color_level" style="background-color:#e77a17;"></div>50
+		  </label>
+		  <label>
+			<div class="color_level" style="background-color:#ffa500;"></div>40
+		  </label>
+		  <label>
+			<div class="color_level" style="background-color:#ffff00;"></div>30
+		  </label>
+		  <label>
+			<div class="color_level" style="background-color:#7cfc00;"></div>20
+		  </label>
+		  <label>
+			<div class="color_level" style="background-color:#008000;"></div>15
+		  </label>
+		  <label>
+			<div class="color_level" style="background-color:#4169e1;"></div>10
+		  </label>
+		  <label>
+			<div class="color_level" style="background-color:#00bfff;"></div>6
+		  </label>
+		  <label>
+			<div class="color_level" style="background-color:#afeeee;"></div>2
+		  </label>
+		  <label>
+			<div class="color_level" style="background-color:#c0c0c0 ;"></div>1 毫米(mm)
+		  </label>
         </div>
-      </div>
-      <button type="button" onclick="hide()">clear</button>
+        <div class="row">
+          <div id="loading" style="display:none; padding-top: 200px; text-align: center; z-index: 50; position: absolute; width: 90%; height: 100%;">
+            <img style="" src='http://www.autopricemanager.com/img/widget-loader-lg-en.gif'/>
+            <div id = 'percent'></div>
+          </div>
+    			<div id="map"></div>
+    			<div id="map_path"></div>
+        </div>
+    </div>
+    
 
 
     <!-- Bootstrap core JavaScript-->
@@ -137,8 +219,8 @@
     <!-- Custom scripts for this page-->
     <script src="js/sb-admin-datatables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiiaGoBDWtC5er65hnzgoVNxXNmxPftBM&libraries=visualization">
-    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiiaGoBDWtC5er65hnzgoVNxXNmxPftBM&libraries=drawing&libraries=visualization"></script>
+	<script type="text/javascript" src="http://rdc28.cwb.gov.tw/TDB/js/basic_search/obj_googleMaps.js"></script>
   </div>
 </body>
 
