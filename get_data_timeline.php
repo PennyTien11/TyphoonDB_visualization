@@ -27,16 +27,22 @@
 
   // //Print array in JSON format
   // echo json_encode($dbdata);
+  header("Content-Type:text/html; charset=utf-8");
+  mb_internal_encoding('UTF-8');
+  mb_http_output('UTF-8');
   mysql_connect($dbhost, $dbuser, $dbpass)or die('Error with MySQL connection');
   mysql_select_db($dbname);
-
+  mysql_query ("set names utf8" );
+  
   $sql = "select * from typhoon_list;";
   $table = mysql_query($sql);
+  
 
   $result = array();
 
   while($row = mysql_fetch_array($table))
   {
+    $chi_name = $row['chinese'];
     $name = $row['english'];
     $begin = $row['begin_time'];
     $end = $row['end_time'];
@@ -49,7 +55,7 @@
     $end_h=substr($end,11,-3);
     $end_min=substr($end,14,2);
 
-    $temp = array("name" => $name, "begin_y" => $row['year'], "begin_mon"=>$begin_mon, "begin_d"=>$begin_d, "begin_h"=>$begin_h, "begin_min"=>$begin_min, "end_mon"=>$end_mon, "end_d"=>$end_d, "end_h"=>$end_h, "end_min"=>$end_min);
+    $temp = array("name" => $name, "chi_name" => $chi_name ,"begin_y" => $row['year'], "begin_mon"=>$begin_mon, "begin_d"=>$begin_d, "begin_h"=>$begin_h, "begin_min"=>$begin_min, "end_mon"=>$end_mon, "end_d"=>$end_d, "end_h"=>$end_h, "end_min"=>$end_min);
     array_push($result, $temp);
   }
 

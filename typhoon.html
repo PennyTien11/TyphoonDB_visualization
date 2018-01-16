@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <title>歷年有發警報颱風資料</title>
+  <!-- Bootstrap core CSS-->
+  <link href="vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Custom fonts for this template-->
+  <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+  <!-- Page level plugin CSS-->
+  <link href="vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+  <!-- Custom styles for this template-->
+  <link href="css/sb-admin.css" rel="stylesheet">
+  <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <script type="text/javascript" src="http://rdc28.cwb.gov.tw/TDB/js/jquery-1.7.2.min.js"></script>
+  <script type="text/javascript" src="http://rdc28.cwb.gov.tw/TDB/js/jquery-ui-1.8.16.custom.min.js"></script>
+  <script type="text/javascript" src="http://rdc28.cwb.gov.tw/TDB/js/json_parse.js"></script>
+      <script type="text/javascript" src="http://rdc28.cwb.gov.tw/TDB/js/basic_search/obj_googleMaps.js"></script>
+  <script src="javascript.js"></script>
+  <script type="text/javascript">
+      google.charts.load("current", {packages:["corechart"]});
+      google.charts.setOnLoadCallback(path_type);
+
+      google.charts.load("current", {packages:['corechart']});
+      google.charts.setOnLoadCallback(num_year);
+
+      google.charts.load("current", {packages:["timeline"]});
+  
+  </script>
+  <style type="text/css">
+    body{
+      margin: 30px;
+    }
+      .ggl-tooltip {
+      border: 1px solid #E0E0E0;
+      font-family: Arial, Helvetica;
+      font-size: 8pt;
+      padding: 12px 12px 12px 12px;
+    }
+
+    .ggl-tooltip div {
+      padding: 6px 6px 6px 6px;
+    }
+
+    .ggl-tooltip span {
+      font-weight: bold;
+    }
+    #form{
+      display: none;
+    } 
+   #map {
+    width:35%;
+        height: 800px;
+    float:left; 
+    margin:10px;
+      }
+    #map_path {
+    width:62%;
+        height: 800px;
+    float:left; 
+    margin:10px;
+      }
+    
+    .color_level {
+    width:10px; 
+    height:10px; 
+    float:left; 
+    margin-left:5px; 
+    }
+  </style>
+</head>
+
+<body class="fixed-nav sticky-footer bg-dark" id="page-top">
+  <!-- Navigation-->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top" id="mainNav">
+    <a class="navbar-brand" href="index.html">Start Bootstrap</a>
+    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+  </nav>
+
+  <div class="content-wrapper" style="padding: 10px;"> 
+    <div class="container-fluid" style="padding-left: 0; padding-right: 0;">
+      <!-- Breadcrumbs-->
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+          <a href="#">Dashboard</a>
+        </li>
+        <li class="breadcrumb-item active">My Dashboard</li>
+      </ol>
+      </div>
+      <div class="row">
+        <div class="col-lg-8">
+          <!-- Example Bar Chart Card-->
+          <div class="card mb-3">
+            <div class="card-header">
+              <i class="fa fa-area-chart"></i> 歷年有發警報颱風數量</div>
+            <div class="card-body">
+              <div id="num_year"></div>
+            </div>
+            <div class="card-footer small text-muted">點選柱狀圖觀看當年颱風資訊</div>
+          </div>
+          <!-- /Card Columns-->
+        </div>
+        <div class="col-lg-4" style="padding-left: 0;">
+          <!-- Example Pie Chart Card-->
+          <div class="card mb-3">
+            <div class="card-header">
+              <i class="fa fa-pie-chart"></i>歷年侵台路徑圓餅圖</div>
+            <div class="card-body">
+              <div id="path"></div>
+            </div>
+            <div class="card-footer small text-muted"><a href="http://www.cwb.gov.tw/V7/knowledge/encyclopedia/ty041.htm"> 侵台路徑說明</a>(
+              None 則表示未侵臺)</div>
+          </div>
+
+      </div>
+    </div>
+
+      <div class="card-header" id="timeLineTitle">
+        Data updata just now
+      </div>
+      <div class="card-body" style="height:150px;">
+          <div class="row">
+            <div class="col-sm-8 my-auto">
+              <div id="year_timeline"></div>
+            </div>
+        </div>
+      </div>
+    <div class="card-header" id="rain_title">
+    </div>
+    <div class="card-body">
+      <div id='form'>
+          <label>
+                <input type="checkbox" name="mapHeat" checked>累積雨量趨勢分布圖
+          </label>&nbsp;
+          <label>
+                <input type="checkbox" name="mapGeo"  checked>累積雨量圖
+          </label>&nbsp;
+      <label>
+      <div class="color_level" style="background-color:#fec7f1;"></div>300
+      </label>
+      <label>
+      <div class="color_level" style="background-color:#fc20c7;"></div>200
+      </label>
+      <label>
+      <div class="color_level" style="background-color:#cf4597;"></div>150
+      </label>
+      <label>
+      <div class="color_level" style="background-color:#a20d9d;"></div>130
+      </label>
+      <label>
+      <div class="color_level" style="background-color:#862f17;"></div>110
+      </label>
+      <label>
+      <div class="color_level" style="background-color:#bd2409;"></div>90
+      </label>
+      <label>
+      <div class="color_level" style="background-color:#red;"></div>70
+      </label>
+      <label>
+      <div class="color_level" style="background-color:#e77a17;"></div>50
+      </label>
+      <label>
+      <div class="color_level" style="background-color:#ffa500;"></div>40
+      </label>
+      <label>
+      <div class="color_level" style="background-color:#ffff00;"></div>30
+      </label>
+      <label>
+      <div class="color_level" style="background-color:#7cfc00;"></div>20
+      </label>
+      <label>
+      <div class="color_level" style="background-color:#008000;"></div>15
+      </label>
+      <label>
+      <div class="color_level" style="background-color:#4169e1;"></div>10
+      </label>
+      <label>
+      <div class="color_level" style="background-color:#00bfff;"></div>6
+      </label>
+      <label>
+      <div class="color_level" style="background-color:#afeeee;"></div>2
+      </label>
+      <label>
+      <div class="color_level" style="background-color:#c0c0c0 ;"></div>1 毫米(mm)
+      </label>
+        </div>
+        <div class="row">
+          <div id="loading" style="display:none; padding-top: 200px; text-align: center; z-index: 50; position: absolute; width: 100%; height: 100%;">
+            <img style="" src='http://www.autopricemanager.com/img/widget-loader-lg-en.gif'/>
+            <div id = 'percent'></div>
+          </div>
+          <div id="map"></div>
+          <div id="map_path"></div>
+        </div>
+    </div>
+    
+
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <!-- Page level plugin JavaScript-->
+    <!-- <script src="vendor/chart.js/Chart.min.js"></script> -->
+    <script src="vendor/datatables/jquery.dataTables.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin.min.js"></script>
+    <!-- Custom scripts for this page-->
+    <script src="js/sb-admin-datatables.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiiaGoBDWtC5er65hnzgoVNxXNmxPftBM&libraries=drawing&libraries=visualization"></script>
+  <script type="text/javascript" src="http://rdc28.cwb.gov.tw/TDB/js/basic_search/obj_googleMaps.js"></script>
+  </div>
+</body>
+
+</html>

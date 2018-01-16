@@ -9,16 +9,15 @@
   mysql_connect($dbhost, $dbuser, $dbpass)or die('Error with MySQL connection');
   mysql_select_db($dbname);
 
-  // include('Net/SSH2.php');
-  // $ssh = new Net_SSH2('140.138.77.170');
+  include('Net/SSH2.php');
+  $ssh = new Net_SSH2('140.138.77.170');
 
-  // if (!$ssh->login('pennytien', 'penny8411')) {
-  //     exit('Login Failed');
-  // }
+  if (!$ssh->login('pennytien', 'penny8411')) {
+      exit('Login Failed');
+  }
 
   #updata the typhoon list
-  // $result = $ssh->exec('python3.6 public_html/updata_year.py');
-  // $url = chop($result);
+  $ssh->exec('python3.6 public_html/updata_year.py');
 
   date_default_timezone_set("Asia/Taipei");
   $thisyear = date("Y");
